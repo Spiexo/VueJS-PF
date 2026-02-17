@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { CartItem } from '@/stores/cart.store'
-import { useCartStore } from '@/stores/cart.store'
+import { useCurrencyStore } from '@/stores/currency.store'
 
 defineProps<{
   item: CartItem
 }>()
 
-const cartStore = useCartStore()
+const emit = defineEmits<{
+  (e: 'update-quantity', id: number, quantity: number): void
+  (e: 'remove', id: number): void
+}>()
+
+const currencyStore = useCurrencyStore()
 </script>
 
 <template>
@@ -19,29 +25,30 @@ const cartStore = useCartStore()
       <h3>
         <RouterLink :to="'/product/' + item.id">{{ item.title }}</RouterLink>
       </h3>
-      <p class="unit-price">${{ item.price.toFixed(2) }}</p>
+      <p class="unit-price">
+        {{ currencyStore.currentSymbol }}{{ currencyStore.convertPrice(item.price) }}
+      </p>
     </div>
 
     <div class="actions">
       <div class="quantity-controls">
         <button
-          @click="cartStore.updateQuantity(item.id, item.quantity - 1)"
+          @click="emit('update-quantity', item.id, item.quantity - 1)"
           :disabled="item.quantity <= 1"
           class="qty-btn"
         >
           -
         </button>
         <span class="qty">{{ item.quantity }}</span>
-        <button @click="cartStore.updateQuantity(item.id, item.quantity + 1)" class="qty-btn">
+        <button @click="emit('update-quantity', item.id, item.quantity + 1)" class="qty-btn">
           +
         </button>
       </div>
-      <div class="total">${{ (item.price * item.quantity).toFixed(2) }}</div>
-      <button
-        @click="cartStore.removeFromCart(item.id)"
-        class="remove-btn"
-        aria-label="Remove item"
-      >
+      <div class="total">
+        {{ currencyStore.currentSymbol
+        }}{{ currencyStore.convertPrice(item.price * item.quantity) }}
+      </div>
+      <button @click="emit('remove', item.id)" class="remove-btn" aria-label="Remove item">
         &times;
       </button>
     </div>

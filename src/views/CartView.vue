@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores/cart.store'
+import { useCurrencyStore } from '@/stores/currency.store'
 import CartItem from '@/components/CartItem.vue'
 
 const cartStore = useCartStore()
+const currencyStore = useCurrencyStore()
 </script>
 
 <template>
@@ -16,18 +18,30 @@ const cartStore = useCartStore()
 
     <div v-else class="cart-content">
       <div class="cart-items">
-        <CartItem v-for="item in cartStore.items" :key="item.id" :item="item" />
+        <CartItem
+          v-for="item in cartStore.items"
+          :key="item.id"
+          :item="item"
+          @update-quantity="cartStore.updateQuantity"
+          @remove="cartStore.removeFromCart"
+        />
       </div>
 
       <div class="cart-summary">
         <h2>Summary</h2>
         <div class="summary-row">
           <span>Items ({{ cartStore.totalItems }})</span>
-          <span>${{ cartStore.totalPrice.toFixed(2) }}</span>
+          <span
+            >{{ currencyStore.currentSymbol
+            }}{{ currencyStore.convertPrice(cartStore.totalPrice) }}</span
+          >
         </div>
         <div class="summary-row total">
           <span>Total</span>
-          <span>${{ cartStore.totalPrice.toFixed(2) }}</span>
+          <span
+            >{{ currencyStore.currentSymbol
+            }}{{ currencyStore.convertPrice(cartStore.totalPrice) }}</span
+          >
         </div>
         <button class="checkout-btn">Proceed to Checkout</button>
       </div>

@@ -1,31 +1,59 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 import type { Product } from '@/types/product'
-import { useCartStore } from '@/stores/cart.store'
+import { useCurrencyStore } from '@/stores/currency.store'
 
 const props = defineProps<{
   product: Product
 }>()
 
-const cartStore = useCartStore()
+const emit = defineEmits<{
+  (e: 'add-to-cart', product: Product): void
+}>()
+
+const router = useRouter()
+const currencyStore = useCurrencyStore()
+
+const isAdded = ref(false)
+
+const navigateToProduct = () => {
+  router.push(`/product/${props.product.id}`)
+}
+
+const handleAddToCart = () => {
+  emit('add-to-cart', props.product)
+  isAdded.value = true
+  setTimeout(() => {
+    isAdded.value = false
+  }, 1000)
+}
 </script>
 
 <template>
-  <div class="product-card">
-    <RouterLink :to="'/product/' + product.id" style="padding: 0">
-      <div class="image-container">
-        <img :src="product.image" :alt="product.title" loading="lazy" />
+  <div class="product-card" @click="navigateToProduct">
+    <div class="image-container">
+      <img :src="product.image" :alt="product.title" loading="lazy" />
+    </div>
+    <div class="content">
+      <h3 class="title" :title="product.title">
+        {{ product.title }}
+      </h3>
+      <p class="category">{{ product.category }}</p>
+      <div class="footer">
+        <span class="price"
+          >{{ currencyStore.currentSymbol }}{{ currencyStore.convertPrice(product.price) }}</span
+        >
+        <button
+          @click.stop="handleAddToCart"
+          class="add-btn"
+          :class="{ added: isAdded }"
+          :disabled="isAdded"
+        >
+          {{ isAdded ? 'Added!' : 'Add to Cart' }}
+        </button>
       </div>
-      <div class="content">
-        <h3 class="title" :title="product.title">
-          {{ product.title }}
-        </h3>
-        <p class="category">{{ product.category }}</p>
-        <div class="footer">
-          <span class="price">${{ product.price.toFixed(2) }}</span>
-          <button @click="cartStore.addToCart(product)" class="add-btn">Add to Cart</button>
-        </div>
-      </div>
-    </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -41,6 +69,7 @@ const cartStore = useCartStore()
     box-shadow 0.2s;
   background-color: var(--color-background-soft);
   height: 100%;
+  cursor: pointer;
 }
 
 .product-card:hover {
@@ -82,15 +111,6 @@ img {
   -webkit-box-orient: vertical;
 }
 
-.title a {
-  color: var(--color-heading);
-  text-decoration: none;
-}
-
-.title a:hover {
-  color: hsla(160, 100%, 37%, 1);
-}
-
 .category {
   font-size: 0.8rem;
   color: var(--color-text);
@@ -119,10 +139,20 @@ img {
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  min-width: 100px;
 }
 
-.add-btn:hover {
+.add-btn:hover:not(:disabled) {
   background-color: hsla(160, 100%, 30%, 1);
+}
+
+.add-btn.added {
+  background-color: #4ade80; /* Green check color */
+  transform: scale(1.05);
+}
+
+.add-btn:disabled {
+  cursor: default;
 }
 </style>

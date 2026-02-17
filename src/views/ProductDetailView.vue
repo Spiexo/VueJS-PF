@@ -1,14 +1,28 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProductStore } from '@/stores/product.store'
 import { useCartStore } from '@/stores/cart.store'
+import { useCurrencyStore } from '@/stores/currency.store'
 import BaseLoader from '@/components/BaseLoader.vue'
 import BaseError from '@/components/BaseError.vue'
 
 const route = useRoute()
 const productStore = useProductStore()
 const cartStore = useCartStore()
+const currencyStore = useCurrencyStore()
+
+const isAdded = ref(false)
+
+const handleAddToCart = () => {
+  if (productStore.currentProduct) {
+    cartStore.addToCart(productStore.currentProduct)
+    isAdded.value = true
+    setTimeout(() => {
+      isAdded.value = false
+    }, 1000)
+  }
+}
 
 const loadData = () => {
   const id = Number(route.params.id)
@@ -34,12 +48,20 @@ watch(() => route.params.id, loadData)
       <div class="info-section">
         <span class="category">{{ productStore.currentProduct.category }}</span>
         <h1>{{ productStore.currentProduct.title }}</h1>
-        <p class="price">${{ productStore.currentProduct.price.toFixed(2) }}</p>
+        <p class="price">
+          {{ currencyStore.currentSymbol
+          }}{{ currencyStore.convertPrice(productStore.currentProduct.price) }}
+        </p>
 
         <p class="description">{{ productStore.currentProduct.description }}</p>
 
-        <button @click="cartStore.addToCart(productStore.currentProduct!)" class="add-to-cart-btn">
-          Add to Cart
+        <button
+          @click="handleAddToCart"
+          class="add-to-cart-btn"
+          :class="{ added: isAdded }"
+          :disabled="isAdded"
+        >
+          {{ isAdded ? 'Added!' : 'Add to Cart' }}
         </button>
       </div>
     </div>
@@ -113,14 +135,26 @@ h1 {
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   align-self: start;
+  min-width: 160px;
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btn:hover:not(:disabled) {
   background-color: hsla(160, 100%, 30%, 1);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-to-cart-btn.added {
+  background-color: #4ade80; /* Green check color */
+  transform: scale(1.05);
+}
+
+.add-to-cart-btn:disabled {
+  cursor: default;
+  transform: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {

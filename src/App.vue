@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { onMounted } from 'vue'
 import { useCartStore } from '@/stores/cart.store'
+import { useCurrencyStore } from '@/stores/currency.store'
 
 const cartStore = useCartStore()
+const currencyStore = useCurrencyStore()
+
+onMounted(() => {
+  currencyStore.fetchRates()
+})
 </script>
 
 <template>
@@ -36,6 +43,11 @@ header {
   padding: 1rem 0;
   border-bottom: 1px solid var(--color-border);
   margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* background-color: var(--color-background); */
+  backdrop-filter: blur(10px);
 }
 
 .wrapper {

@@ -1,33 +1,53 @@
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import type { Product } from '@/types/product'
 
 export interface CartItem extends Product {
   quantity: number
 }
 
+const STORAGE_KEY = 'cart-cache'
+
 export const useCartStore = defineStore('cart', () => {
   const items = ref<CartItem[]>([])
 
-  // Load from localStorage
-  const savedCart = localStorage.getItem('cart')
-  if (savedCart) {
-    items.value = JSON.parse(savedCart)
+  // ── Persistance localStorage ──
+
+  const saveToStorage = () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        data: items.value,
+        timestamp: Date.now(),
+      }),
+    )
   }
 
-  // Save to localStorage whenever items change
-  watch(
-    items,
-    (newItems) => {
-      localStorage.setItem('cart', JSON.stringify(newItems))
-    },
-    { deep: true },
-  )
+  const loadFromStorage = (): { data: CartItem[]; timestamp: number | null } => {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (!stored) return { data: [], timestamp: null }
+
+    try {
+      return JSON.parse(stored)
+    } catch {
+      return { data: [], timestamp: null }
+    }
+  }
+
+  // Charger le cache au démarrage
+  const cached = loadFromStorage()
+  if (cached.data.length > 0) {
+    items.value = cached.data
+  }
+
+  // ── Computed ──
 
   const totalItems = computed(() => items.value.reduce((total, item) => total + item.quantity, 0))
   const totalPrice = computed(() =>
     items.value.reduce((total, item) => total + item.price * item.quantity, 0),
   )
+
+  // ── Actions ──
 
   function addToCart(product: Product) {
     const existingItem = items.value.find((item) => item.id === product.id)
@@ -36,6 +56,7 @@ export const useCartStore = defineStore('cart', () => {
     } else {
       items.value.push({ ...product, quantity: 1 })
     }
+    saveToStorage()
   }
 
   function removeFromCart(id: number) {
@@ -43,6 +64,7 @@ export const useCartStore = defineStore('cart', () => {
     if (index !== -1) {
       items.value.splice(index, 1)
     }
+    saveToStorage()
   }
 
   function updateQuantity(id: number, quantity: number) {
@@ -51,12 +73,15 @@ export const useCartStore = defineStore('cart', () => {
       item.quantity = quantity
       if (item.quantity <= 0) {
         removeFromCart(id)
+        return
       }
     }
+    saveToStorage()
   }
 
   function clearCart() {
     items.value = []
+    saveToStorage()
   }
 
   return {

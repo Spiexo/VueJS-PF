@@ -12,8 +12,9 @@ const currencyStore = useCurrencyStore()
     <h1>Shopping Cart</h1>
 
     <div v-if="cartStore.items.length === 0" class="empty-cart">
+      <div class="empty-icon">🛒</div>
       <p>Your cart is empty.</p>
-      <RouterLink to="/products" class="continue-shopping">Start Shopping</RouterLink>
+      <RouterLink to="/products" class="continue-shopping">Start Shopping →</RouterLink>
     </div>
 
     <div v-else class="cart-content">
@@ -56,20 +57,42 @@ const currencyStore = useCurrencyStore()
 
 h1 {
   margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--lg-text-primary);
+  letter-spacing: -0.02em;
 }
 
 .empty-cart {
   text-align: center;
-  padding: 4rem 0;
-  color: var(--color-text);
+  padding: 5rem 0;
+  color: var(--lg-text-secondary);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.4;
 }
 
 .continue-shopping {
-  display: inline-block;
-  margin-top: 1rem;
-  color: hsla(160, 100%, 37%, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  color: var(--lg-accent);
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--lg-radius-pill);
+  background: var(--lg-accent-soft);
+  border: 1px solid rgba(100, 210, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.continue-shopping:hover {
+  background: rgba(100, 210, 255, 0.25);
+  box-shadow: 0 0 20px var(--lg-accent-glow);
 }
 
 .cart-content {
@@ -78,45 +101,74 @@ h1 {
   gap: 2rem;
 }
 
+.cart-items {
+  background: var(--lg-surface);
+  backdrop-filter: blur(var(--lg-blur));
+  -webkit-backdrop-filter: blur(var(--lg-blur));
+  border: 1px solid var(--lg-border);
+  border-radius: var(--lg-radius);
+  overflow: hidden;
+  box-shadow: var(--lg-inset-shadow), var(--lg-shadow-sm);
+}
+
 .cart-summary {
-  background: var(--color-background-soft);
+  background: var(--lg-surface);
+  backdrop-filter: blur(var(--lg-blur));
+  -webkit-backdrop-filter: blur(var(--lg-blur));
   padding: 1.5rem;
-  border-radius: 12px;
+  border-radius: var(--lg-radius);
   height: fit-content;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-inset-shadow), var(--lg-shadow-sm);
+}
+
+.cart-summary h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--lg-text-primary);
+  margin-bottom: 1.5rem;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  color: var(--lg-text-secondary);
 }
 
 .total {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.3rem;
-  border-top: 1px solid var(--color-border);
+  color: var(--lg-text-primary);
+  border-top: 1px solid var(--lg-border);
   padding-top: 1rem;
   margin-top: 1rem;
 }
 
+.total span:last-child {
+  color: var(--lg-accent);
+}
+
 .checkout-btn {
   width: 100%;
-  background-color: hsla(160, 100%, 37%, 1);
-  color: white;
-  border: none;
+  background: var(--lg-accent-soft);
+  color: var(--lg-accent);
+  border: 1px solid rgba(100, 210, 255, 0.2);
   padding: 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1.1rem;
+  border-radius: var(--lg-radius-pill);
+  font-weight: 600;
+  font-size: 1.05rem;
   cursor: pointer;
   margin-top: 2rem;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .checkout-btn:hover {
-  background-color: hsla(160, 100%, 30%, 1);
+  background: rgba(100, 210, 255, 0.25);
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 30px var(--lg-accent-glow);
 }
 
 @media (max-width: 768px) {

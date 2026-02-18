@@ -9,16 +9,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 3rem;
 }
 
 .loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid var(--color-heading);
-  border-radius: 50%;
   width: 40px;
   height: 40px;
-  animation: spin 1s linear infinite;
+  border: 3px solid var(--lg-border);
+  border-top: 3px solid var(--lg-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 16px var(--lg-accent-glow);
 }
 
 @keyframes spin {

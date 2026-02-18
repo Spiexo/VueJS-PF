@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: 'ContactView',
+}
+</script>
+
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
@@ -47,7 +53,7 @@ const validateField = (field: string) => {
 
     case 'message':
       if (form.value.message.length < 20) {
-        errors.value.message = 'Votre message'
+        errors.value.message = 'Votre message doit contenir au moins 20 caractères'
       } else {
         errors.value.message = ''
       }
@@ -72,13 +78,11 @@ const isSubmitted = ref(false)
 const submitForm = () => {
   if (!isFormValid.value) return
 
-  // 1. Préparer les données
   const requestData = {
     ...form.value,
     date: new Date().toISOString(),
   }
 
-  // 2. Simuler l'écriture dans un fichier JSON (Téléchargement)
   const jsonString = JSON.stringify(requestData, null, 2)
   const blob = new Blob([jsonString], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
@@ -91,10 +95,8 @@ const submitForm = () => {
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
 
-  // 3. Afficher le succès
   isSubmitted.value = true
 
-  // 4. Reset du formulaire (optionnel si on cache le formulaire)
   form.value = { name: '', email: '', subject: '', message: '' }
   errors.value = { name: '', email: '', subject: '', message: '' }
 }
@@ -118,7 +120,9 @@ const resetForm = () => {
       </div>
 
       <form v-else @submit.prevent="submitForm" class="form">
-        <div>
+        <h1>Contact Us</h1>
+
+        <div class="form-group">
           <label for="name">Nom</label>
           <input
             id="name"
@@ -130,7 +134,7 @@ const resetForm = () => {
           <p v-if="errors.name" class="error">{{ errors.name }}</p>
         </div>
 
-        <div>
+        <div class="form-group">
           <label for="email">Email</label>
           <input
             id="email"
@@ -142,7 +146,7 @@ const resetForm = () => {
           <p v-if="errors.email" class="error">{{ errors.email }}</p>
         </div>
 
-        <div>
+        <div class="form-group">
           <label for="subject">Sujet</label>
           <select id="subject" v-model="form.subject" @change="validateField('subject')">
             <option value="" disabled>Sélectionner un sujet</option>
@@ -153,7 +157,7 @@ const resetForm = () => {
           <p v-if="errors.subject" class="error">{{ errors.subject }}</p>
         </div>
 
-        <div>
+        <div class="form-group">
           <label for="message">Message</label>
           <textarea
             id="message"
@@ -164,7 +168,9 @@ const resetForm = () => {
           <p v-if="errors.message" class="error">{{ errors.message }}</p>
         </div>
 
-        <button type="submit" :disabled="!isFormValid">Envoyer la demande</button>
+        <button type="submit" class="submit-btn" :disabled="!isFormValid">
+          Envoyer la demande
+        </button>
       </form>
     </transition>
   </div>
@@ -172,8 +178,9 @@ const resetForm = () => {
 
 <style scoped>
 .container {
-  max-width: 500px;
+  max-width: 520px;
   margin: 0 auto;
+  padding: 1rem 0;
 }
 
 /* TRANSITIONS */
@@ -193,86 +200,122 @@ const resetForm = () => {
 /* SUCCESS MESSAGE */
 .success-message {
   text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  background: var(--lg-surface);
+  backdrop-filter: blur(var(--lg-blur));
+  -webkit-backdrop-filter: blur(var(--lg-blur));
+  border-radius: var(--lg-radius);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-inset-shadow), var(--lg-shadow);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .icon-circle {
-  font-size: 48px;
-  margin-bottom: 8px;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
 }
 
 .success-message h2 {
-  color: #2e7d32;
+  color: var(--lg-success);
   margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .success-message p {
-  color: #666;
-  margin-bottom: 24px;
+  color: var(--lg-text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
 }
 
 .btn-primary {
-  padding: 12px 24px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
+  padding: 0.8rem 2rem;
+  background: var(--lg-success-soft);
+  color: var(--lg-success);
+  border: 1px solid rgba(48, 209, 88, 0.2);
+  border-radius: var(--lg-radius-pill);
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .btn-primary:hover {
-  background-color: #43a047;
+  background: rgba(48, 209, 88, 0.25);
+  border-color: var(--lg-success);
+  box-shadow: 0 0 20px rgba(48, 209, 88, 0.3);
 }
 
+/* FORM */
 .form {
-  padding: 24px;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  background: #f9f9f9;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 1.5rem;
+  background: var(--lg-surface);
+  backdrop-filter: blur(var(--lg-blur));
+  -webkit-backdrop-filter: blur(var(--lg-blur));
+  border-radius: var(--lg-radius);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-inset-shadow), var(--lg-shadow);
 }
 
-div {
+.form h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--lg-text-primary);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 label {
   font-weight: 600;
-  font-size: 14px;
-  color: #333;
+  font-size: 0.85rem;
+  color: var(--lg-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 input,
 select,
 textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.2s;
-  background: white;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--lg-border);
+  border-radius: var(--lg-radius-sm);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--lg-text-primary);
+  font-family: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--lg-text-tertiary);
+}
+
+select option {
+  background: #1a1a2e;
+  color: var(--lg-text-primary);
 }
 
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: #4caf50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 16px var(--lg-accent-glow);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 textarea {
@@ -281,33 +324,37 @@ textarea {
 }
 
 .error {
-  color: #e53935;
-  font-size: 12px;
+  color: var(--lg-error);
+  font-size: 0.8rem;
   margin: 0;
   font-weight: 500;
 }
 
-button {
-  margin-top: 10px;
-  padding: 14px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
+.submit-btn {
+  margin-top: 0.5rem;
+  padding: 0.9rem;
+  background: var(--lg-accent-soft);
+  color: var(--lg-accent);
+  border: 1px solid rgba(100, 210, 255, 0.2);
+  border-radius: var(--lg-radius-pill);
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
-button:hover:not(:disabled) {
-  background-color: #43a047;
+.submit-btn:hover:not(:disabled) {
+  background: rgba(100, 210, 255, 0.25);
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 30px var(--lg-accent-glow);
   transform: translateY(-1px);
 }
 
-button:disabled {
-  background-color: #ccc;
+.submit-btn:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
-  opacity: 0.7;
+  background: var(--lg-surface);
+  color: var(--lg-text-tertiary);
+  border-color: var(--lg-border);
 }
 </style>

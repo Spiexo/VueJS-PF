@@ -31,7 +31,11 @@ onMounted(() => {
     </header>
 
     <main>
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+        <KeepAlive include="ContactView">
+          <component :is="Component" />
+        </KeepAlive>
+      </RouterView>
     </main>
   </div>
 </template>
@@ -39,15 +43,15 @@ onMounted(() => {
 <style scoped>
 header {
   line-height: 1.5;
-  max-height: 100vh;
   padding: 1rem 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--lg-border);
   margin-bottom: 2rem;
   position: sticky;
   top: 0;
   z-index: 100;
-  /* background-color: var(--color-background); */
-  backdrop-filter: blur(10px);
+  background: rgba(10, 10, 15, 0.6);
+  backdrop-filter: blur(var(--lg-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--lg-blur-heavy));
 }
 
 .wrapper {
@@ -59,37 +63,37 @@ nav {
   width: 100%;
   font-size: 1rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 nav a.router-link-exact-active {
-  color: hsla(160, 100%, 37%, 1);
-  font-weight: bold;
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+  color: var(--lg-accent);
+  font-weight: 600;
+  background: var(--lg-accent-soft);
 }
 
 nav a {
   display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--lg-radius-pill);
   text-decoration: none;
-  color: var(--color-text);
-  transition: color 0.2s;
-}
-
-nav a:first-of-type {
-  border: 0;
+  color: var(--lg-text-secondary);
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border: none;
 }
 
 nav a:hover {
-  color: hsla(160, 100%, 37%, 1);
+  color: var(--lg-text-primary);
+  background: var(--lg-surface-hover);
 }
 
 .cart-badge {
-  font-weight: bold;
-  color: hsla(160, 100%, 37%, 1);
+  font-weight: 700;
+  color: var(--lg-accent);
 }
 
 main {

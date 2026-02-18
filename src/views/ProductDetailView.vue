@@ -61,7 +61,7 @@ watch(() => route.params.id, loadData)
           :class="{ added: isAdded }"
           :disabled="isAdded"
         >
-          {{ isAdded ? 'Added!' : 'Add to Cart' }}
+          {{ isAdded ? '✓ Added!' : 'Add to Cart' }}
         </button>
       </div>
     </div>
@@ -77,19 +77,23 @@ watch(() => route.params.id, loadData)
 }
 
 .image-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 16px;
+  background: var(--lg-surface);
+  backdrop-filter: blur(var(--lg-blur));
+  -webkit-backdrop-filter: blur(var(--lg-blur));
+  padding: 3rem;
+  border-radius: var(--lg-radius);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--lg-border);
+  box-shadow: var(--lg-inset-shadow), var(--lg-shadow-sm);
 }
 
 img {
   max-width: 100%;
   max-height: 400px;
   object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
 }
 
 .info-section {
@@ -100,54 +104,62 @@ img {
 
 .category {
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.9rem;
-  color: var(--color-text);
-  opacity: 0.7;
-  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  color: var(--lg-text-tertiary);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
 }
 
 h1 {
   font-size: 2rem;
+  font-weight: 700;
   margin-bottom: 1rem;
   line-height: 1.2;
+  color: var(--lg-text-primary);
+  letter-spacing: -0.02em;
 }
 
 .price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: hsla(160, 100%, 37%, 1);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--lg-accent);
   margin-bottom: 1.5rem;
 }
 
 .description {
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  color: var(--lg-text-secondary);
+  font-size: 0.95rem;
 }
 
 .add-to-cart-btn {
-  background-color: hsla(160, 100%, 37%, 1);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: bold;
+  background: var(--lg-accent-soft);
+  color: var(--lg-accent);
+  border: 1px solid rgba(100, 210, 255, 0.2);
+  padding: 1rem 2.5rem;
+  border-radius: var(--lg-radius-pill);
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   align-self: start;
-  min-width: 160px;
+  min-width: 180px;
+  backdrop-filter: blur(10px);
 }
 
 .add-to-cart-btn:hover:not(:disabled) {
-  background-color: hsla(160, 100%, 30%, 1);
+  background: rgba(100, 210, 255, 0.25);
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 30px var(--lg-accent-glow);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .add-to-cart-btn.added {
-  background-color: #4ade80; /* Green check color */
+  background: var(--lg-success-soft);
+  color: var(--lg-success);
+  border-color: rgba(48, 209, 88, 0.3);
   transform: scale(1.05);
 }
 

@@ -1,46 +1,88 @@
-# E-commerce app
+# 💎 VueJS-PF | E-Commerce
 
-## Recommended IDE Setup
+Une application e-commerce moderne construite avec **Vue 3**, **TypeScript** et **Pinia**, offrant une expérience utilisateur fluide avec un design esthétique "Liquid Glass".
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## ✨ Caractéristiques
 
-## Recommended Browser Setup
+- 🎨 **Design** : Esthétique "Liquid Glass" inspirée de macOS/iOS (frosted glass, gradients dynamiques).
+- 🛍️ **Catalogue de Produits** : Affichage dynamique des produits récupérés via une API externe.
+- 🔍 **Recherche Intelligente** : Filtrage en temps réel des produits.
+- 🛒 **Gestion du Panier** : Store Pinia complet pour gérer l'ajout, la suppression et les quantités.
+- 💱 **Multi-Devises** : Conversion dynamique des prix (USD, EUR, GBP, JPY) avec un store dédié.
+- 📝 **Formulaire de Contact** : Validation robuste côté client et gestion des états de succès.
+- 🚀 **Performance** : Mise en cache locale des produits pour réduire les appels API.
+- 🧪 **Qualité** : Suite complète de tests unitaires (Vitest) et typage TypeScript strict.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## 🛠️ Stack Technique
 
-## Type Support for `.vue` Imports in TS
+- **Framework** : [Vue.js 3](https://vuejs.org/) (Composition API)
+- **Gestion d'état** : [Pinia](https://pinia.vuejs.org/)
+- **Routage** : [Vue Router 4](https://router.vuejs.org/)
+- **Langage** : [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool** : [Vite](https://vitejs.dev/)
+- **API Produits** : [FakeStoreAPI](https://fakestoreapi.com/)
+- **API Devises** : [ExchangeRate-API](https://www.exchangerate-api.com/)
+- **Tests** : [Vitest](https://vitest.dev/)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## 📁 Structure du Projet
 
-## Customize configuration
+```text
+src/
+├── api/          # Appels API (Product Service)
+├── assets/       # Styles globaux (Variables Liquid Glass)
+├── components/   # Composants UI réutilisables
+├── router/       # Configuration des routes
+├── stores/       # Gestion d'état globale (Cart, Currency, Product)
+│   └── __tests__/ # Tests unitaires des stores
+├── types/        # Interfaces et types TypeScript
+└── views/        # Pages de l'application
+```
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 🚀 Installation
 
-## Project Setup
+### 1. Cloner le dépôt
+
+```sh
+git clone https://github.com/Spiexo/VueJS-PF.git
+cd VueJS-PF
+```
+
+### 2. Installer les dépendances
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 3. Lancer en mode développement
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 4. Lancer les tests
 
 ```sh
-npm run build
+npm run test
+
+npm run test -- --coverage
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## 📖 Scripts disponibles
 
-```sh
-npm run lint
-```
+| Commande             | Description                                 |
+| :------------------- | :------------------------------------------ |
+| `npm run dev`        | Lance le serveur de développement.          |
+| `npm run build`      | Compile l'application pour la production.   |
+| `npm run test`       | Exécute les tests unitaires une seule fois. |
+| `npm run test:watch` | Exécute les tests en mode watch.            |
+| `npm run type-check` | Vérifie le typage TypeScript.               |
+| `npm run lint`       | Analyse et corrige le code avec ESLint.     |
+
+## 👷‍♂️ Setup recommandé
+
+- **IDE** : [VS Code](https://code.visualstudio.com/) + extension [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar).
+- **Outils** : [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd).
+
+---
+
+_Projet réalisé dans le cadre du cours Web Avance Front - B3 Ynov 2025-2026._

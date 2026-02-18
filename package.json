@@ -10,7 +10,9 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "pinia": "^3.0.4",
@@ -21,17 +23,21 @@
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.10.9",
     "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/coverage-v8": "^4.0.18",
     "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "~10.7.0",
     "jiti": "^2.6.1",
+    "jsdom": "^28.1.0",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.8.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.5",
+    "vitest": "^4.0.18",
     "vue-tsc": "^3.2.2"
   },
   "engines": {

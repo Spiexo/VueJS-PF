@@ -50,7 +50,7 @@ const handleAddToCart = () => {
           :class="{ added: isAdded }"
           :disabled="isAdded"
         >
-          {{ isAdded ? 'Added!' : 'Add to Cart' }}
+          {{ isAdded ? 'Added' : 'Add to Cart' }}
         </button>
       </div>
     </div>
@@ -59,52 +59,61 @@ const handleAddToCart = () => {
 
 <style scoped>
 .product-card {
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
+  background: var(--lg-surface);
+  backdrop-filter: blur(var(--lg-blur));
+  -webkit-backdrop-filter: blur(var(--lg-blur));
+  border: 1px solid var(--lg-border);
+  border-radius: var(--lg-radius);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-  background-color: var(--color-background-soft);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   height: 100%;
   cursor: pointer;
+  box-shadow: var(--lg-inset-shadow), var(--lg-shadow-sm);
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--lg-border-strong);
+  box-shadow:
+    var(--lg-inset-shadow),
+    var(--lg-shadow),
+    0 0 40px rgba(100, 210, 255, 0.06);
+  background: var(--lg-surface-hover);
 }
 
 .image-container {
   height: 200px;
-  background-color: white;
-  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid var(--lg-border);
 }
 
 img {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
 }
 
 .content {
-  padding: 1rem;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .title {
-  color: black;
-  font-size: 1rem;
-  margin: 0 0 0.5rem 0;
+  color: var(--lg-text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem 0;
   line-height: 1.4;
-  height: 2.8em; /* 2 lines */
+  height: 2.8em;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -112,10 +121,11 @@ img {
 }
 
 .category {
-  font-size: 0.8rem;
-  color: var(--color-text);
-  opacity: 0.8;
-  text-transform: capitalize;
+  font-size: 0.75rem;
+  color: var(--lg-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
   margin-bottom: 1rem;
 }
 
@@ -127,28 +137,35 @@ img {
 }
 
 .price {
-  font-weight: bold;
-  font-size: 1.1rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--lg-accent);
 }
 
 .add-btn {
-  background-color: hsla(160, 100%, 37%, 1);
-  color: white;
-  border: none;
+  background: var(--lg-accent-soft);
+  color: var(--lg-accent);
+  border: 1px solid rgba(100, 210, 255, 0.2);
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--lg-radius-pill);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
   min-width: 100px;
+  backdrop-filter: blur(10px);
 }
 
 .add-btn:hover:not(:disabled) {
-  background-color: hsla(160, 100%, 30%, 1);
+  background: rgba(100, 210, 255, 0.25);
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 16px var(--lg-accent-glow);
 }
 
 .add-btn.added {
-  background-color: #4ade80; /* Green check color */
+  background: var(--lg-success-soft);
+  color: var(--lg-success);
+  border-color: rgba(48, 209, 88, 0.3);
   transform: scale(1.05);
 }
 
